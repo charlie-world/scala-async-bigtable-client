@@ -12,7 +12,7 @@ libraryDependencies += "com.charlie.world" %% "scala-async-bigtable-client" % "0
 
 ## Quick Start
 
-###Create a Bigtable
+### Create a Bigtable
 ```
 val projectId = "<SOME_PROJECT_ID>"
 val instanceId = "<SOME_BIGTABLE_INSTANCE_ID>"
@@ -21,7 +21,7 @@ implicit val session: BigtableSession = <BIGTABLE_SESSION>
 val bigtable = new Bigtable(projectId, instanceId)
 ```
 
-###Create a Scanner with Query
+### Create a Scanner with Query
 ```
 implicit val executeContext = scala.concurrent.ExecutionContext.Implicits.global
 val tableName = "<SOME_TABLE_NAME>"
