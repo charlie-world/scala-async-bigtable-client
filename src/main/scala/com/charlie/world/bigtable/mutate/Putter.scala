@@ -1,22 +1,21 @@
 package com.charlie.world.bigtable.mutate
 
-import com.charlie.world.bigtable.utils.{FutureConverter, StringConverter}
+import com.charlie.world.bigtable.utils.{FutureConverter, JavaScalaConverter, StringConverter}
 import com.google.bigtable.v2.MutateRowsRequest.Entry
 import com.google.bigtable.v2.Mutation.SetCell
 import com.google.bigtable.v2._
 import com.google.cloud.bigtable.grpc.BigtableSession
 import com.google.protobuf.ByteString
 
-import scala.collection.JavaConverters._
 import scala.concurrent.{ExecutionContext, Future}
 
 /**
   * Writer Charlie Lee 
   * Created at 2018. 1. 5.
   */
-class Putter(table: String)
-            (implicit session: BigtableSession)
+class Putter(table: String)(implicit session: BigtableSession)
   extends BigtableMutate
+    with JavaScalaConverter
     with StringConverter
     with FutureConverter {
 
@@ -28,7 +27,7 @@ class Putter(table: String)
     Entry
       .newBuilder()
       .setRowKey(rowKey)
-      .addAllMutations(mutations.asJava)
+      .addAllMutations(mutations)
       .build()
   }
 
@@ -36,13 +35,13 @@ class Putter(table: String)
     MutateRowsRequest
       .newBuilder()
       .setTableName(getFullTableName(table))
-      .addAllEntries(entries.asJava)
+      .addAllEntries(entries)
       .build()
   }
 
   override def executeAsync(mutateRowsRequest: MutateRowsRequest)
                            (implicit ec: ExecutionContext): Future[Seq[MutateRowsResponse]] = {
-    session.getDataClient.mutateRowsAsync(mutateRowsRequest).asScala.map(_.asScala.toSeq)
+    session.getDataClient.mutateRowsAsync(mutateRowsRequest).map(_.toSeq)
   }
 
   override def createMutation(columnFamily: String, columnQualifier: ByteString, value: ByteString): Mutation = {

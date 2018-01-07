@@ -10,9 +10,7 @@ import com.google.cloud.bigtable.grpc.BigtableSession
   * Writer Charlie Lee
   * Created at 2018. 1. 5.
   */
-class Bigtable(projectId: String,
-                     instanceId: String)
-                    (implicit session: BigtableSession) {
+class Bigtable(projectId: String, instanceId: String)(implicit session: BigtableSession) {
 
   def getSession: BigtableSession = session
 
@@ -26,19 +24,18 @@ class Bigtable(projectId: String,
   }
 
   /**
-    * Read some data from a Bigtable table.
+    * Craete Scanner of table
     *
     * @param table table name
-    * @return TableRead
+    * @return Scanner
     */
   def scanner(table: String) = new Scanner(table)
 
   /**
-    * Perform mutations on a row atomically.
+    * Create Putter of table and row
     *
     * @param table table name
-    * @param row   row key
-    * @return BigtableMutation
+    * @return Putter
     */
-  def bigtableWriter(table: String, row: String) = new Putter(table)
+  def bigtableWriter(table: String) = new Putter(table)
 }

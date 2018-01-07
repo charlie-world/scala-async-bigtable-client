@@ -1,7 +1,7 @@
 organization := "com.charlie.world"
 name := "scala-async-bigtable-client"
 
-version := "0.1.0"
+version := "0.1.1"
 
 scalaVersion := "2.12.3"
 

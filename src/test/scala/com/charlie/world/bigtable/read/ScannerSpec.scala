@@ -1,15 +1,12 @@
 package com.charlie.world.bigtable.read
 
-import co.bitfinder.awair.bigtable.utils.{Await, StringConverter}
-import com.charlie.world.bigtable.utils.{Await, StringConverter}
+import com.charlie.world.bigtable.utils.{Await, JavaScalaConverter, StringConverter}
 import com.google.bigtable.v2.{ReadRowsRequest, Row, RowRange, RowSet}
 import com.google.cloud.bigtable.grpc.{BigtableDataClient, BigtableSession}
 import com.google.common.util.concurrent.Futures
 import org.scalatest.mockito.MockitoSugar
 import org.mockito.Mockito.when
 import org.scalatest.{FlatSpec, Matchers}
-
-import scala.collection.JavaConverters._
 
 /**
   * Writer Charlie Lee 
@@ -19,6 +16,7 @@ class ScannerSpec
   extends FlatSpec
     with Matchers
     with MockitoSugar
+    with JavaScalaConverter
     with StringConverter
     with Await {
 
@@ -33,7 +31,7 @@ class ScannerSpec
     val rowRange = RowRange.newBuilder().setStartKeyOpen(startRowKey).setEndKeyOpen(endRowKey).build()
 
     val result = scanner.createRowSet(startRowKey, endRowKey)
-    result.getRowRangesList.asScala shouldBe Seq(rowRange)
+    result.getRowRangesList shouldBe Seq(rowRange)
   }
 
   "executeAsync" should "scan entries" in {
@@ -46,7 +44,7 @@ class ScannerSpec
     when(session.getDataClient)
       .thenReturn(dataClient)
     when(dataClient.readRowsAsync(readRequest))
-      .thenReturn(Futures.immediateFuture(Seq[Row]().asJava))
+      .thenReturn(Futures.immediateFuture(Seq[Row]()))
 
     scanner.executeAsync(rowSet).await() shouldBe Seq()
   }
