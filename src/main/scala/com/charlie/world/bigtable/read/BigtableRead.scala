@@ -1,6 +1,7 @@
 package com.charlie.world.bigtable.read
 
-import com.google.bigtable.v2.{Row, RowSet}
+import com.google.bigtable.v2.RowSet
+import com.google.cloud.bigtable.grpc.scanner.FlatRow
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -12,5 +13,5 @@ trait BigtableRead {
 
   def createRowSet(startRowKey: String, endRowKey: String): RowSet
 
-  def executeAsync(rowSet: RowSet)(implicit ec: ExecutionContext): Future[Seq[Row]]
+  def executeAsync(rowSet: RowSet)(implicit ec: ExecutionContext): Future[Seq[FlatRow]]
 }

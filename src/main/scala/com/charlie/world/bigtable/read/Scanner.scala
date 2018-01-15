@@ -1,8 +1,9 @@
 package com.charlie.world.bigtable.read
 
 import com.charlie.world.bigtable.utils.{FutureConverter, JavaScalaConverter, StringConverter}
-import com.google.bigtable.v2.{ReadRowsRequest, Row, RowRange, RowSet}
+import com.google.bigtable.v2.{ReadRowsRequest, RowRange, RowSet}
 import com.google.cloud.bigtable.grpc.BigtableSession
+import com.google.cloud.bigtable.grpc.scanner.FlatRow
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -17,9 +18,9 @@ class Scanner(table: String)(implicit session: BigtableSession)
     with FutureConverter {
 
   override def executeAsync(rowSet: RowSet)
-                           (implicit ec: ExecutionContext): Future[Seq[Row]] = {
+                           (implicit ec: ExecutionContext): Future[Seq[FlatRow]] = {
     val readRequest = ReadRowsRequest.newBuilder().setTableName(table).setRows(rowSet).build()
-    session.getDataClient.readRowsAsync(readRequest).map(_.toSeq)
+    session.getDataClient.readFlatRowsAsync(readRequest).map(_.toSeq)
   }
 
   override def createRowSet(startRowKey: String, endRowKey: String): RowSet = {
