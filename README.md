@@ -7,11 +7,6 @@ official asynchronous client. also it is a java library, not a scala library so 
 using this official library on scala projects. so that these needs, scala-async-bigtable-client library for user level project is 
 started. 
 
-### To use this library, add this on your build.sbt.
-```
-libraryDependencies += "com.charlie.world" %% "scala-async-bigtable-client" % "0.1.1"
-```
-
 ## Quick Start
 
 ### Create a Bigtable
